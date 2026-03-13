@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://b3ttjtiefwset"]
 
 [ext_resource type="Script" uid="uid://cgotqcu7eptnb" path="res://scripts/combat/BattleScene.gd" id="1_idkgt"]
+[ext_resource type="Script" uid="uid://dfix84wcpbii6" path="res://scripts/managers/HeroPanel.gd" id="2_kinr6"]
+[ext_resource type="PackedScene" uid="uid://dcchtantrbx2n" path="res://scenes/HeroPanel.tscn" id="2_rca61"]
 
 [node name="BattleScene" type="Node2D" unique_id=116343715]
 script = ExtResource("1_idkgt")
 
 [node name="Hero" type="Sprite2D" parent="." unique_id=254919744]
-position = Vector2(150, 360)
+position = Vector2(180, 350)
 
 [node name="ColorRect" type="ColorRect" parent="Hero" unique_id=1471689303]
 offset_right = 80.0
@@ -14,16 +16,16 @@ offset_bottom = 100.0
 color = Color(0, 0, 1, 1)
 
 [node name="Monster" type="Node2D" parent="." unique_id=378494490]
-position = Vector2(900, 360)
+position = Vector2(900, 350)
 
 [node name="Sprite2D" type="Sprite2D" parent="Monster" unique_id=1183982434]
 
 [node name="HealthBar" type="ProgressBar" parent="Monster" unique_id=7173925]
 custom_minimum_size = Vector2(150, 20)
 offset_left = -75.0
-offset_top = -70.0
+offset_top = -80.0
 offset_right = 75.0
-offset_bottom = -43.0
+offset_bottom = -53.0
 value = 100.0
 show_percentage = false
 
@@ -37,28 +39,47 @@ autostart = true
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=30114344]
 
+[node name="TopBar" type="ColorRect" parent="UI" unique_id=66342137]
+offset_right = 1280.0
+offset_bottom = 50.0
+color = Color(0.003921569, 0.003921569, 0.003921569, 0.3529412)
+
 [node name="GoldLabel" type="Label" parent="UI" unique_id=1868363750]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 60.0
-offset_bottom = 43.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 33.0
 
 [node name="StageLabel" type="Label" parent="UI" unique_id=642180754]
-offset_left = 20.0
-offset_top = 60.0
-offset_right = 60.0
-offset_bottom = 83.0
+offset_left = 300.0
+offset_top = 10.0
+offset_right = 340.0
+offset_bottom = 33.0
 
 [node name="DPSLabel" type="Label" parent="UI" unique_id=1392607869]
-offset_left = 20.0
-offset_top = 100.0
-offset_right = 60.0
-offset_bottom = 123.0
+offset_left = 550.0
+offset_top = 10.0
+offset_right = 590.0
+offset_bottom = 33.0
 
-[node name="UpgradeButton" type="Button" parent="UI" unique_id=1763686964]
-offset_left = 400.0
-offset_top = 600.0
-offset_right = 600.0
-offset_bottom = 660.0
+[node name="SaveButton" type="Button" parent="UI" unique_id=1143007831]
+offset_left = 1100.0
+offset_top = 5.0
+offset_right = 1250.0
+offset_bottom = 45.0
+
+[node name="HeroPanel" parent="." unique_id=1640054513 instance=ExtResource("2_rca61")]
+script = ExtResource("2_kinr6")
+
+[node name="PanelContainer" type="PanelContainer" parent="HeroPanel" unique_id=2044094136]
+offset_top = 500.0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HeroPanel/PanelContainer" unique_id=802779451]
+layout_mode = 2
+
+[node name="HeroList" type="HBoxContainer" parent="HeroPanel/PanelContainer/ScrollContainer" unique_id=767835088]
+layout_mode = 2
 
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

@@ -5,23 +5,110 @@ var gold: float = 0.0
 var total_gold_earned: float = 0.0
 
 # --- COMBAT STATS ---
-var player_dps: float = 10.0
-var attack_speed: float = 1.0  # attacks per second
+var player_dps: float = 0.0
+var attack_speed: float = 1.0
 
 # --- PROGRESSION ---
 var current_stage: int = 1
 var monsters_killed: int = 0
 var monsters_per_stage: int = 10
 
-# --- UPGRADES ---
-var upgrade_level: int = 0
-var upgrade_base_cost: float = 50.0
-var upgrade_dps_bonus: float = 5.0
+# --- HEROES ---
+var heroes: Array = []
 
 # --- SIGNALS ---
 signal gold_changed(new_amount)
 signal stage_changed(new_stage)
 signal monster_killed
+signal heroes_updated
+
+func _ready():
+	_init_heroes()
+
+func _init_heroes():
+	heroes = [
+		{
+			"name": "Mage",
+			"emoji": "🧙",
+			"description": "A wise spellcaster",
+			"base_dps": 10.0,
+			"base_cost": 50.0,
+			"cost_multiplier": 1.15,
+			"dps_multiplier": 1.20,
+			"level": 0,
+			"unlocked": false
+		},
+		{
+			"name": "Warrior",
+			"emoji": "⚔️",
+			"description": "A mighty fighter",
+			"base_dps": 40.0,
+			"base_cost": 200.0,
+			"cost_multiplier": 1.18,
+			"dps_multiplier": 1.22,
+			"level": 0,
+			"unlocked": false
+		},
+		{
+			"name": "Archer",
+			"emoji": "🏹",
+			"description": "Swift and precise",
+			"base_dps": 120.0,
+			"base_cost": 800.0,
+			"cost_multiplier": 1.20,
+			"dps_multiplier": 1.25,
+			"level": 0,
+			"unlocked": false
+		},
+		{
+			"name": "Necromancer",
+			"emoji": "💀",
+			"description": "Commands the undead",
+			"base_dps": 400.0,
+			"base_cost": 3000.0,
+			"cost_multiplier": 1.22,
+			"dps_multiplier": 1.28,
+			"level": 0,
+			"unlocked": false
+		},
+		{
+			"name": "Dragon",
+			"emoji": "🐉",
+			"description": "Devastating power",
+			"base_dps": 1500.0,
+			"base_cost": 15000.0,
+			"cost_multiplier": 1.25,
+			"dps_multiplier": 1.30,
+			"level": 0,
+			"unlocked": false
+		}
+	]
+
+func get_hero_cost(hero: Dictionary) -> float:
+	return hero["base_cost"] * pow(hero["cost_multiplier"], hero["level"])
+
+func get_hero_dps(hero: Dictionary) -> float:
+	if hero["level"] == 0:
+		return 0.0
+	return hero["base_dps"] * pow(hero["dps_multiplier"], hero["level"] - 1)
+
+func buy_or_upgrade_hero(index: int) -> bool:
+	var hero = heroes[index]
+	var cost = get_hero_cost(hero)
+	if spend_gold(cost):
+		hero["level"] += 1
+		hero["unlocked"] = true
+		recalculate_dps()
+		emit_signal("heroes_updated")
+		return true
+	return false
+
+func recalculate_dps():
+	player_dps = 0.0
+	for hero in heroes:
+		player_dps += get_hero_dps(hero)
+	if player_dps == 0.0:
+		player_dps = 10.0
 
 func add_gold(amount: float):
 	gold += amount
@@ -33,17 +120,6 @@ func spend_gold(amount: float) -> bool:
 		gold -= amount
 		emit_signal("gold_changed", gold)
 		return true
-	return false  # not enough gold
-
-func get_upgrade_cost() -> float:
-	return upgrade_base_cost * pow(1.15, upgrade_level)
-
-func buy_upgrade() -> bool:
-	var cost = get_upgrade_cost()
-	if spend_gold(cost):
-		upgrade_level += 1
-		player_dps += upgrade_dps_bonus * upgrade_level
-		return true
 	return false
 
 func on_monster_killed():
@@ -53,3 +129,28 @@ func on_monster_killed():
 		monsters_killed = 0
 		current_stage += 1
 		emit_signal("stage_changed", current_stage)
+
+# --- AUTO SAVE ---
+var save_timer: float = 0.0
+var auto_save_interval: float = 30.0
+
+func _process(delta):
+	save_timer += delta
+	if save_timer >= auto_save_interval:
+		save_timer = 0.0
+		SaveManager.save_game()
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		SaveManager.save_game()
+		get_tree().quit()
+
+# --- FORMAT NUMBERS (1000 = 1K, 1000000 = 1M) ---
+func format_number(num: float) -> String:
+	if num >= 1_000_000_000:
+		return str(snapped(num / 1_000_000_000, 0.1)) + "B"
+	elif num >= 1_000_000:
+		return str(snapped(num / 1_000_000, 0.1)) + "M"
+	elif num >= 1_000:
+		return str(snapped(num / 1_000, 0.1)) + "K"
+	return str(snapped(num, 0.1))

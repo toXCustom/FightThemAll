@@ -26,7 +26,7 @@ func build_hero_list():
 		
 		hero_list.add_child(btn)
 
-func _get_hero_text(hero: Dictionary, index: int) -> String:
+func _get_hero_text(hero: Dictionary, _index: int) -> String:
 	var cost = GameManager.get_hero_cost(hero)
 	var dps = GameManager.get_hero_dps(hero)
 	var level_text = "Lv." + str(hero["level"]) if hero["level"] > 0 else "LOCKED"

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameManager="*uid://upsd3jboij7f"
 SaveManager="*uid://bcnlmv1l4ke4c"
+MonsterData="*uid://d2qqkq1sid4ve"
 
 [display]
 

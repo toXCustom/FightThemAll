@@ -15,12 +15,24 @@ func _ready():
 	$AttackTimer.start()
 	$UI/SaveButton.pressed.connect(_on_SaveButton_pressed)
 	spawn_monster()
+	start_hero_animation()
+	start_monster_animation()
 	update_ui()
 
 func spawn_monster():
 	var stage = GameManager.current_stage
 	is_boss = MonsterData.is_boss_stage(stage)
 	current_monster = MonsterData.get_monster_for_stage(stage)
+	
+	var texture_path = current_monster.get("texture", "")
+	if texture_path != "" and ResourceLoader.exists(texture_path):
+		$Monster/Sprite2D.texture = load(texture_path)
+	
+	# Boss gets bigger!
+	if is_boss:
+		$Monster/Sprite2D.scale = Vector2(1.5, 1.5)
+	else:
+		$Monster/Sprite2D.scale = Vector2(1.0, 1.0)
 
 	# Calculate HP and gold based on stage + monster type
 	var base_hp = 100.0 * pow(1.15, stage - 1)
@@ -47,6 +59,26 @@ func spawn_monster():
 
 	update_monster_ui()
 	update_monster_healthbar()
+
+# Hero bobs up and down gently
+func start_hero_animation():
+	var tween = create_tween()
+	tween.set_loops()
+	tween.tween_property($Hero, "position:y", 340.0, 0.8)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	tween.tween_property($Hero, "position:y", 360.0, 0.8)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+
+# Monster pulses slightly
+func start_monster_animation():
+	var tween = create_tween()
+	tween.set_loops()
+	tween.tween_property($Monster, "scale", Vector2(1.05, 1.05), 0.6)\
+		.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property($Monster, "scale", Vector2(1.0, 1.0), 0.6)\
+		.set_ease(Tween.EASE_IN_OUT)
 
 func _on_AttackTimer_timeout():
 	deal_damage(GameManager.player_dps)

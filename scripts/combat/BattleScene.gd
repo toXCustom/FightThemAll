@@ -23,39 +23,28 @@ func spawn_monster():
 	var stage = GameManager.current_stage
 	is_boss = MonsterData.is_boss_stage(stage)
 	current_monster = MonsterData.get_monster_for_stage(stage)
-	
-	var texture_path = current_monster.get("texture", "")
-	if texture_path != "" and ResourceLoader.exists(texture_path):
-		$Monster/Sprite2D.texture = load(texture_path)
-	
-	# Boss gets bigger!
-	if is_boss:
-		$Monster/Sprite2D.scale = Vector2(1.5, 1.5)
-	else:
-		$Monster/Sprite2D.scale = Vector2(1.0, 1.0)
 
-	# Calculate HP and gold based on stage + monster type
 	var base_hp = 100.0 * pow(1.15, stage - 1)
 	var base_gold = 10.0 * pow(1.12, stage - 1)
-
 	monster_max_hp = base_hp * current_monster["hp_mult"]
 	gold_reward = base_gold * current_monster["gold_mult"]
 
-	# Boss is 3x stronger and gives 3x gold!
 	if is_boss:
 		monster_max_hp *= 3.0
 		gold_reward *= 3.0
 
 	monster_current_hp = monster_max_hp
 
-	# Change monster color
-	$Monster/Sprite2D/ColorRect.color = current_monster["color"]
-
-	# Boss gets bigger!
+	# Scale Sprite2D directly — boss gets bigger
 	if is_boss:
-		$Monster/Sprite2D/ColorRect.scale = Vector2(1.5, 1.5)
+		$Monster/Sprite2D.scale = Vector2(1.5, 1.5)
 	else:
-		$Monster/Sprite2D/ColorRect.scale = Vector2(1.0, 1.0)
+		$Monster/Sprite2D.scale = Vector2(1.0, 1.0)
+
+	# Load monster texture dynamically
+	var texture_path = current_monster.get("texture", "")
+	if texture_path != "" and ResourceLoader.exists(texture_path):
+		$Monster/Sprite2D.texture = load(texture_path)
 
 	update_monster_ui()
 	update_monster_healthbar()
@@ -87,10 +76,10 @@ func deal_damage(amount: float):
 	monster_current_hp -= amount
 	update_monster_healthbar()
 
-	# Flash red on hit
+	# Flash Sprite2D red on hit
 	var tween = create_tween()
-	tween.tween_property($Monster/Sprite2D/ColorRect, "modulate", Color.RED, 0.05)
-	tween.tween_property($Monster/Sprite2D/ColorRect, "modulate", Color.WHITE, 0.05)
+	tween.tween_property($Monster/Sprite2D, "modulate", Color.RED, 0.05)
+	tween.tween_property($Monster/Sprite2D, "modulate", Color.WHITE, 0.05)
 
 	if monster_current_hp <= 0:
 		monster_died()

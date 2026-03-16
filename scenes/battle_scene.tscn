@@ -22,11 +22,6 @@ position = Vector2(900, 350)
 
 [node name="Sprite2D" type="Sprite2D" parent="Monster" unique_id=1183982434]
 
-[node name="ColorRect" type="ColorRect" parent="Monster/Sprite2D" unique_id=376788321]
-offset_right = 80.0
-offset_bottom = 100.0
-color = Color(1, 0, 0, 1)
-
 [node name="HealthBar" type="ProgressBar" parent="Monster" unique_id=7173925]
 custom_minimum_size = Vector2(150, 20)
 offset_left = -75.0

@@ -9,7 +9,7 @@ const MONSTER_TYPES = [
 		"hp_mult": 1.0,
 		"gold_mult": 1.0,
 		"color": Color(0.6, 0.6, 0.6),
-		"texture": "res://assets/sprites/monsters/MonsterRat.jpg"
+		"texture": "res://assets/sprites/monsters/MonsterRat.png"
 	},
 	{
 		"name": "Wolf",
@@ -18,7 +18,7 @@ const MONSTER_TYPES = [
 		"hp_mult": 1.5,
 		"gold_mult": 1.5,
 		"color": Color(0.4, 0.3, 0.2),
-		"texture": "res://assets/sprites/monsters/MonsterWolf.jpg"
+		"texture": "res://assets/sprites/monsters/MonsterWolf.png"
 	},
 	{
 		"name": "Zombie",
@@ -27,7 +27,7 @@ const MONSTER_TYPES = [
 		"hp_mult": 2.0,
 		"gold_mult": 2.0,
 		"color": Color(0.2, 0.5, 0.2),
-		"texture": "res://assets/sprites/monsters/MonsterZombie.jpg"
+		"texture": "res://assets/sprites/monsters/MonsterZombie.png"
 	},
 	{
 		"name": "Drake",
@@ -36,7 +36,7 @@ const MONSTER_TYPES = [
 		"hp_mult": 3.0,
 		"gold_mult": 3.0,
 		"color": Color(0.8, 0.2, 0.2),
-		"texture": "res://assets/sprites/monsters/MonsterDrake.jpg"
+		"texture": "res://assets/sprites/monsters/MonsterDrake.png"
 	},
 	{
 		"name": "Demon",
@@ -45,7 +45,7 @@ const MONSTER_TYPES = [
 		"hp_mult": 5.0,
 		"gold_mult": 5.0,
 		"color": Color(0.5, 0.0, 0.5),
-		"texture": "res://assets/sprites/monsters/MonsterDemon.jpg"
+		"texture": "res://assets/sprites/monsters/MonsterDemon.png"
 	},
 	{
 		"name": "Dragon",
@@ -54,7 +54,7 @@ const MONSTER_TYPES = [
 		"hp_mult": 10.0,
 		"gold_mult": 10.0,
 		"color": Color(1.0, 0.3, 0.0),
-		"texture": "res://assets/sprites/monsters/MonsterDragon.jpg"
+		"texture": "res://assets/sprites/monsters/MonsterDragon.png"
 	}
 ]
 

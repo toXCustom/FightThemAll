@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var prestige_panel = $PrestigePanel
+
 var monster_max_hp: float = 100.0
 var monster_current_hp: float = 100.0
 var gold_reward: float = 10.0
@@ -10,13 +12,13 @@ func _ready():
 	SaveManager.load_game()
 	GameManager.gold_changed.connect(_on_gold_changed)
 	GameManager.stage_changed.connect(_on_stage_changed)
+	GameManager.prestige_completed.connect(_on_prestige_completed)
 	$AttackTimer.timeout.connect(_on_AttackTimer_timeout)
 	$AttackTimer.wait_time = 1.0 / GameManager.attack_speed
 	$AttackTimer.start()
 	$UI/SaveButton.pressed.connect(_on_SaveButton_pressed)
+	$UI/PrestigeButton.pressed.connect(_on_PrestigeButton_pressed)
 	spawn_monster()
-	start_hero_animation()
-	start_monster_animation()
 	update_ui()
 
 func spawn_monster():
@@ -120,3 +122,17 @@ func _on_SaveButton_pressed():
 	$UI/SaveButton.text = "Saved! ✓"
 	await get_tree().create_timer(1.5).timeout
 	$UI/SaveButton.text = "Save Game"
+	
+func _on_PrestigeButton_pressed():
+	if prestige_panel:
+		prestige_panel.show_panel()
+	else:
+		print("ERROR: PrestigePanel not found!")
+
+func _on_prestige_completed(gems_earned: int):
+	# Flash the whole screen gold!
+	var tween = create_tween()
+	tween.tween_property($Hero, "modulate", Color.GOLD, 0.2)
+	tween.tween_property($Hero, "modulate", Color.WHITE, 0.5)
+	spawn_monster()
+	update_ui()

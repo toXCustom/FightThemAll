@@ -16,11 +16,19 @@ var monsters_per_stage: int = 10
 # --- HEROES ---
 var heroes: Array = []
 
+# --- PRESTIGE ---
+var prestige_count: int = 0
+var soul_gems: int = 0
+var gold_multiplier: float = 1.0
+var prestige_requirement: int = 50  # must reach stage 50 to prestige
+
 # --- SIGNALS ---
 signal gold_changed(new_amount)
 signal stage_changed(new_stage)
 signal monster_killed
 signal heroes_updated
+signal prestige_completed(gems_earned)
+
 
 func _ready():
 	_init_heroes()
@@ -110,11 +118,6 @@ func recalculate_dps():
 	if player_dps == 0.0:
 		player_dps = 10.0
 
-func add_gold(amount: float):
-	gold += amount
-	total_gold_earned += amount
-	emit_signal("gold_changed", gold)
-
 func spend_gold(amount: float) -> bool:
 	if gold >= amount:
 		gold -= amount
@@ -154,3 +157,43 @@ func format_number(num: float) -> String:
 	elif num >= 1_000:
 		return str(snapped(num / 1_000, 0.1)) + "K"
 	return str(snapped(num, 0.1))
+	
+func can_prestige() -> bool:
+	return current_stage >= prestige_requirement
+
+func calculate_gems_reward() -> int:
+	# More stages = more gems
+	return int(sqrt(current_stage) * (prestige_count + 1))
+
+func do_prestige():
+	if not can_prestige():
+		return
+
+	var gems_earned = calculate_gems_reward()
+	soul_gems += gems_earned
+	prestige_count += 1
+
+	# Update gold multiplier — each gem = +10% gold
+	gold_multiplier = 1.0 + (soul_gems * 0.10)
+
+	# Reset progress
+	gold = 0.0
+	total_gold_earned = 0.0
+	player_dps = 0.0
+	current_stage = 1
+	monsters_killed = 0
+
+	# Reset all heroes
+	for hero in heroes:
+		hero["level"] = 0
+		hero["unlocked"] = false
+
+	emit_signal("prestige_completed", gems_earned)
+	SaveManager.save_game()
+
+# Override add_gold to apply multiplier
+func add_gold(amount: float):
+	var boosted = amount * gold_multiplier
+	gold += boosted
+	total_gold_earned += boosted
+	emit_signal("gold_changed", gold)

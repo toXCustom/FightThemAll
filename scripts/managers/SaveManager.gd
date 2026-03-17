@@ -9,16 +9,19 @@ func save_game():
 			"level": hero["level"],
 			"unlocked": hero["unlocked"]
 		})
-	
+
 	var save_data = {
 		"gold": GameManager.gold,
 		"total_gold_earned": GameManager.total_gold_earned,
 		"player_dps": GameManager.player_dps,
 		"current_stage": GameManager.current_stage,
 		"monsters_killed": GameManager.monsters_killed,
-		"heroes": heroes_save
+		"heroes": heroes_save,
+		"prestige_count": GameManager.prestige_count,
+		"soul_gems": GameManager.soul_gems,
+		"gold_multiplier": GameManager.gold_multiplier
 	}
-	
+
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(save_data))
@@ -41,6 +44,9 @@ func load_game():
 			GameManager.total_gold_earned = data.get("total_gold_earned", 0.0)
 			GameManager.current_stage = data.get("current_stage", 1)
 			GameManager.monsters_killed = data.get("monsters_killed", 0)
+			GameManager.prestige_count = data.get("prestige_count", 0)
+			GameManager.soul_gems = data.get("soul_gems", 0)
+			GameManager.gold_multiplier = data.get("gold_multiplier", 1.0)
 			
 			# Load heroes
 			var heroes_data = data.get("heroes", [])

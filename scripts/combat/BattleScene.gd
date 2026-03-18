@@ -106,6 +106,7 @@ func update_ui():
 	$UI/GoldLabel.text = "Gold: " + GameManager.format_number(GameManager.gold)
 	$UI/StageLabel.text = "Stage: " + str(GameManager.current_stage)
 	$UI/DPSLabel.text = "DPS: " + GameManager.format_number(GameManager.player_dps)
+	$UI/GemsLabel.text = "💎 Gems: " + str(GameManager.soul_gems) + "  x" + str(snapped(GameManager.gold_multiplier, 0.01)) + " Gold"
 
 func _on_gold_changed(_new_amount):
 	update_ui()
@@ -130,7 +131,7 @@ func _on_PrestigeButton_pressed():
 		print("ERROR: PrestigePanel not found!")
 
 func _on_prestige_completed(gems_earned: int):
-	# Flash the whole screen gold!
+	print("Prestige! Earned " + str(gems_earned) + " gems")
 	var tween = create_tween()
 	tween.tween_property($Hero, "modulate", Color.GOLD, 0.2)
 	tween.tween_property($Hero, "modulate", Color.WHITE, 0.5)

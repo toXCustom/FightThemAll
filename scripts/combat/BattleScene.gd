@@ -51,26 +51,6 @@ func spawn_monster():
 	update_monster_ui()
 	update_monster_healthbar()
 
-# Hero bobs up and down gently
-func start_hero_animation():
-	var tween = create_tween()
-	tween.set_loops()
-	tween.tween_property($Hero, "position:y", 340.0, 0.8)\
-		.set_ease(Tween.EASE_IN_OUT)\
-		.set_trans(Tween.TRANS_SINE)
-	tween.tween_property($Hero, "position:y", 360.0, 0.8)\
-		.set_ease(Tween.EASE_IN_OUT)\
-		.set_trans(Tween.TRANS_SINE)
-
-# Monster pulses slightly
-func start_monster_animation():
-	var tween = create_tween()
-	tween.set_loops()
-	tween.tween_property($Monster, "scale", Vector2(1.05, 1.05), 0.6)\
-		.set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property($Monster, "scale", Vector2(1.0, 1.0), 0.6)\
-		.set_ease(Tween.EASE_IN_OUT)
-
 func _on_AttackTimer_timeout():
 	deal_damage(GameManager.player_dps)
 

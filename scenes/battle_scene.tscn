@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dfix84wcpbii6" path="res://scripts/managers/HeroPanel.gd" id="2_kinr6"]
 [ext_resource type="PackedScene" uid="uid://dcchtantrbx2n" path="res://scenes/HeroPanel.tscn" id="2_rca61"]
 [ext_resource type="Texture2D" uid="uid://ctl0wgl50cb5p" path="res://assets/sprites/HeroMage.png" id="3_pxwbd"]
+[ext_resource type="Script" uid="uid://bw5hb38ia6825" path="res://scripts/managers/HeroParty.gd" id="3_rum4d"]
 [ext_resource type="PackedScene" uid="uid://bp5xfnmkophkr" path="res://scenes/PrestigaPanel.tscn" id="6_1i8jf"]
 [ext_resource type="Script" uid="uid://jwmbjwxifvyp" path="res://scripts/managers/PrestigePanel.gd" id="7_svpld"]
 
@@ -15,7 +16,10 @@ script = ExtResource("1_idkgt")
 position = Vector2(640, 360)
 texture = ExtResource("2_8qdv8")
 
-[node name="Hero" type="Sprite2D" parent="." unique_id=254919744]
+[node name="HeroParty" type="Node2D" parent="." unique_id=2000044310]
+script = ExtResource("3_rum4d")
+
+[node name="Hero" type="Sprite2D" parent="HeroParty" unique_id=254919744]
 position = Vector2(180, 350)
 texture = ExtResource("3_pxwbd")
 

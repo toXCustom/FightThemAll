@@ -44,7 +44,8 @@ func _init_heroes():
 			"cost_multiplier": 1.15,
 			"dps_multiplier": 1.20,
 			"level": 0,
-			"unlocked": false
+			"unlocked": false,
+			"texture": "res://assets/sprites/heroes/HeroMage.png"
 		},
 		{
 			"name": "Warrior",
@@ -55,7 +56,8 @@ func _init_heroes():
 			"cost_multiplier": 1.18,
 			"dps_multiplier": 1.22,
 			"level": 0,
-			"unlocked": false
+			"unlocked": false,
+			"texture": "res://assets/sprites/heroes/HeroWarrior.png"
 		},
 		{
 			"name": "Archer",
@@ -66,7 +68,8 @@ func _init_heroes():
 			"cost_multiplier": 1.20,
 			"dps_multiplier": 1.25,
 			"level": 0,
-			"unlocked": false
+			"unlocked": false,
+			"texture": "res://assets/sprites/heroes/HeroArcher.png"
 		},
 		{
 			"name": "Necromancer",
@@ -77,7 +80,8 @@ func _init_heroes():
 			"cost_multiplier": 1.22,
 			"dps_multiplier": 1.28,
 			"level": 0,
-			"unlocked": false
+			"unlocked": false,
+			"texture": "res://assets/sprites/heroes/HeroNecromancer.png"
 		},
 		{
 			"name": "Dragon",
@@ -88,7 +92,8 @@ func _init_heroes():
 			"cost_multiplier": 1.25,
 			"dps_multiplier": 1.30,
 			"level": 0,
-			"unlocked": false
+			"unlocked": false,
+			"texture": "res://assets/sprites/heroes/HeroDragon.png"
 		}
 	]
 

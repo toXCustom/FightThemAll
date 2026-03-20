@@ -133,6 +133,5 @@ layout_mode = 2
 
 [node name="CloseButton" type="Button" parent="PrestigePanel/PanelContainer/VBoxContainer" unique_id=419251318]
 layout_mode = 2
-text = "❌ Close"
 
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

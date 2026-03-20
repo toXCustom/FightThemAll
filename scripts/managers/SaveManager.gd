@@ -13,7 +13,6 @@ func save_game():
 	var save_data = {
 		"gold": GameManager.gold,
 		"total_gold_earned": GameManager.total_gold_earned,
-		"player_dps": GameManager.player_dps,
 		"current_stage": GameManager.current_stage,
 		"monsters_killed": GameManager.monsters_killed,
 		"heroes": heroes_save,
@@ -55,6 +54,7 @@ func load_game():
 				GameManager.heroes[i]["unlocked"] = heroes_data[i].get("unlocked", false)
 			
 			GameManager.recalculate_dps()
+			GameManager.emit_signal("heroes_updated")  # ← ADD THIS LINE
 			print("Game loaded!")
 
 func delete_save():

@@ -112,8 +112,11 @@ func _on_PrestigeButton_pressed():
 
 func _on_prestige_completed(gems_earned: int):
 	print("Prestige! Earned " + str(gems_earned) + " gems")
-	var tween = create_tween()
-	tween.tween_property($Hero, "modulate", Color.GOLD, 0.2)
-	tween.tween_property($Hero, "modulate", Color.WHITE, 0.5)
+	# Flash all heroes in the party
+	for child in $HeroParty.get_children():
+		if child is Sprite2D:
+			var tween = create_tween()
+			tween.tween_property(child, "modulate", Color.GOLD, 0.2)
+			tween.tween_property(child, "modulate", Color.WHITE, 0.5)
 	spawn_monster()
 	update_ui()
